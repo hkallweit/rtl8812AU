@@ -4308,7 +4308,22 @@ static int	cfg80211_rtw_dump_station(struct wiphy *wiphy, struct net_device *nde
 	sinfo->filled = 0;
 	sinfo->filled |= BIT(NL80211_STA_INFO_SIGNAL);
 	sinfo->signal = psta->rssi;
-	
+
+	sinfo->filled |= BIT(NL80211_STA_INFO_RX_BYTES64);
+	sinfo->rx_bytes = psta->sta_stats.rx_bytes;
+
+	sinfo->filled |= BIT(NL80211_STA_INFO_TX_BYTES64);
+	sinfo->tx_bytes = psta->sta_stats.tx_bytes;
+
+	sinfo->filled |= BIT(NL80211_STA_INFO_RX_PACKETS);
+	sinfo->rx_packets = sta_rx_pkts(psta);
+
+	sinfo->filled |= BIT(NL80211_STA_INFO_TX_PACKETS);
+	sinfo->tx_packets = psta->sta_stats.tx_pkts;
+
+	sinfo->filled |= BIT(NL80211_STA_INFO_TX_FAILED);
+	sinfo->tx_failed = psta->sta_stats.tx_drops;
+
 exit:
 	return ret;
 }
